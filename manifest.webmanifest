@@ -1,0 +1,23 @@
+{
+  "name": "Cyrylica od zera",
+  "short_name": "Cyrylica",
+  "description": "Interaktywna nauka cyrylicy dla osób polskojęzycznych.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f3ea",
+  "theme_color": "#f7f3ea",
+  "icons": [
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

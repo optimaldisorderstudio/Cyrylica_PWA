@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f3ea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cyrylica">
+    <meta name="description" content="Interaktywna nauka rosyjskiej cyrylicy dla osób polskojęzycznych.">
+    <title>Cyrylica od zera</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="icon-button nav-toggle" id="navToggle" type="button" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <a class="brand" href="#start" aria-label="Cyrylica od zera">
+          <span class="brand-mark">Я</span>
+          <span>
+            <strong>Cyrylica od zera</strong>
+            <small>alfabet rosyjski</small>
+          </span>
+        </a>
+        <div class="top-actions">
+          <button class="icon-button" id="soundToggle" type="button" aria-label="Dźwięk włączony" title="Dźwięk">♪</button>
+          <button class="icon-button" id="themeToggle" type="button" aria-label="Zmień motyw" title="Motyw">◐</button>
+        </div>
+      </header>
+
+      <aside class="sidebar" id="sidebar">
+        <nav class="nav-list" aria-label="Główna nawigacja">
+          <a href="#start" class="nav-link active" data-view="start">Start</a>
+          <a href="#teoria" class="nav-link" data-view="teoria">Teoria</a>
+          <a href="#litery" class="nav-link" data-view="litery">Litery</a>
+          <a href="#fiszki" class="nav-link" data-view="fiszki">Fiszki</a>
+          <a href="#quiz" class="nav-link" data-view="quiz">Quiz</a>
+          <a href="#pisanie" class="nav-link" data-view="pisanie">Pisanie</a>
+          <a href="#pary" class="nav-link" data-view="pary">Pary</a>
+          <a href="#plan" class="nav-link" data-view="plan">Plan</a>
+        </nav>
+
+        <section class="side-panel">
+          <p class="eyebrow">Poziom</p>
+          <div class="level-select" id="levelSelect" role="group" aria-label="Poziom nauki">
+            <button type="button" data-level="0" class="selected">0</button>
+            <button type="button" data-level="1">1</button>
+            <button type="button" data-level="2">2</button>
+            <button type="button" data-level="3">3</button>
+          </div>
+          <p class="muted small">Poziom ogranicza maksymalny zakres. Zestawy poniżej wybierają, co realnie ćwiczysz.</p>
+        </section>
+
+        <section class="side-panel">
+          <p class="eyebrow">Zestawy</p>
+          <div class="set-select" id="setSelect" aria-label="Zestawy znaków"></div>
+          <button class="mini-button full" type="button" id="selectAllSets">Wszystkie zestawy</button>
+        </section>
+
+        <section class="side-panel">
+          <p class="eyebrow">Prezentacja</p>
+          <div class="mode-select" id="displayMode" role="group" aria-label="Sposób prezentacji znaków">
+            <button type="button" data-mode="upper">Wielkie</button>
+            <button type="button" data-mode="lower">Małe</button>
+            <button type="button" data-mode="mixed">Mieszane</button>
+            <button type="button" data-mode="pair" class="selected">Para</button>
+          </div>
+        </section>
+      </aside>
+
+      <main class="content" id="content">
+        <section class="view active" id="view-start" data-view="start">
+          <div class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Rosyjski alfabet cyrylicki</p>
+              <h1>Ucz się cyrylicy aktywnie, krótko i regularnie.</h1>
+              <p>Rozpoznawanie, przykłady w słowach, pisanie, pary i powtórki adaptacyjne. Bez logowania, bez sieci, bez zewnętrznych bibliotek.</p>
+              <div class="hero-actions">
+                <button class="primary" type="button" data-jump="fiszki">Zacznij fiszki</button>
+                <button class="secondary" type="button" data-jump="teoria">Zobacz teorię</button>
+              </div>
+            </div>
+            <div class="hero-stage" aria-label="Animowana próbka liter">
+              <span>Ж</span><span>Я</span><span>Ф</span><span>Щ</span><span>Ю</span>
+            </div>
+          </div>
+
+          <section class="stats-grid" aria-label="Postęp">
+            <article class="stat-card">
+              <span class="stat-value" id="statKnown">0</span>
+              <span class="stat-label">opanowane znaki</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-value" id="statStreak">0</span>
+              <span class="stat-label">seria poprawnych</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-value" id="statAccuracy">0%</span>
+              <span class="stat-label">skuteczność</span>
+            </article>
+          </section>
+
+          <section class="module-grid">
+            <button class="module-card" type="button" data-jump="litery">
+              <strong>Mapa liter</strong>
+              <span>Wielkie i małe znaki, przykłady oraz skojarzenia.</span>
+            </button>
+            <button class="module-card" type="button" data-jump="quiz">
+              <strong>Quiz wyboru</strong>
+              <span>Wyraźnie oddzielone cyrylica i zapis łaciński.</span>
+            </button>
+            <button class="module-card" type="button" data-jump="pisanie">
+              <strong>Tryb pisania</strong>
+              <span>Wpisuj transliterację i wzmacniaj pamięć czynną.</span>
+            </button>
+            <button class="module-card" type="button" data-jump="pary">
+              <strong>Łączenie par</strong>
+              <span>Karty mają etykiety: cyrylica albo łacinka.</span>
+            </button>
+          </section>
+        </section>
+
+        <section class="view" id="view-teoria" data-view="teoria">
+          <div class="section-head">
+            <p class="eyebrow">Teoria</p>
+            <h2>Jak działa alfabet rosyjski</h2>
+          </div>
+          <div class="theory-layout wide">
+            <article class="theory-block">
+              <h3>Co tu ćwiczymy</h3>
+              <p>Ta aplikacja uczy rosyjskiego alfabetu cyrylickiego: 33 znaków używanych we współczesnym rosyjskim. Cyrylica to rodzina alfabetów. Języki słowiańskie zapisywane cyrylicą mają wspólne korzenie pisma, ale ich współczesne alfabety nie są identyczne.</p>
+              <p>Dlatego ćwiczenia nie uczą „całej cyrylicy świata”, tylko alfabetu rosyjskiego. To dobry punkt startu, ale czytanie ukraińskiego albo białoruskiego wymaga poznania dodatkowych i brakujących znaków.</p>
+            </article>
+            <article class="theory-block">
+              <h3>Kolejność alfabetu</h3>
+              <p class="alphabet-line">А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я</p>
+              <p>To odpowiednik kolejności alfabetycznej. Przydaje się w słownikach, indeksach i sortowaniu nazwisk.</p>
+            </article>
+            <article class="theory-block">
+              <h3>Wielkie i małe litery</h3>
+              <p>Większość małych liter wygląda jak pomniejszona wersja wielkiej, ale nie wszystkie są intuicyjne dla osób znających łacinkę. Szczególnie warto oswoić pary: Б/б, Д/д, И/и, Й/й, Л/л, Т/т.</p>
+            </article>
+            <article class="theory-block">
+              <h3>Najpierw rozpoznawanie</h3>
+              <p>Najskuteczniej działa podział na znaki podobne, fałszywych znajomych, nowe spółgłoski, samogłoski jotowane oraz znaki bez własnego dźwięku.</p>
+            </article>
+            <article class="theory-block">
+              <h3>Aktywne przypominanie</h3>
+              <p>Quizy, pisanie i łączenie par są ważniejsze niż samo czytanie tabeli. Aplikacja częściej pokazuje znaki, które mają niski wynik opanowania.</p>
+            </article>
+            <article class="theory-block">
+              <h3>Klawiatura rosyjska</h3>
+              <p>Rosyjska klawiatura komputerowa zwykle używa układu ЙЦУКЕН. To nie jest QWERTY z prostą podmianą liter: górny rząd zaczyna się od Й Ц У К Е Н Г Ш Щ З Х Ъ. Na telefonie najłatwiej dodać klawiaturę rosyjską w ustawieniach systemu.</p>
+              <img class="keyboard-image" src="keyboard-ru.svg" alt="Schemat rosyjskiej klawiatury ЙЦУКЕН z łacińskimi podpisami QWERTY">
+              <p>Osoby uczące się poza Rosją często używają też układów fonetycznych, gdzie rosyjskie litery są przypisane do podobnie brzmiących klawiszy łacińskich, np. А pod A, Б pod B, Ф pod F.</p>
+            </article>
+            <article class="theory-block comparison-block">
+              <h3>Rosyjski, ukraiński, białoruski</h3>
+              <p>Wszystkie trzy alfabety są cyrylickie, ale różnią się zestawem liter i funkcją niektórych znaków.</p>
+              <div class="alphabet-compare">
+                <div><b>🇷🇺 Rosyjski</b><span>33 litery. Ma Ё, Ы, Э, Ъ. Nie ma І, Ї, Є, Ґ, Ў.</span></div>
+                <div><b>🇺🇦 Ukraiński</b><span>33 litery. Ma Ґ, Є, І, Ї oraz apostrof. Nie używa rosyjskich Ё, Ы, Э, Ъ.</span></div>
+                <div><b>🇧🇾 Białoruski</b><span>32 litery. Ma І i Ў. Używa apostrofu, nie ma rosyjskiego Ъ.</span></div>
+              </div>
+              <p>Praktyczny wniosek: po rosyjskim łatwiej wejść w inne alfabety cyrylickie, ale nie należy zakładać, że każdy znak działa tak samo.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-litery" data-view="litery">
+          <div class="section-head row">
+            <div>
+              <p class="eyebrow">Tabela aktywna</p>
+              <h2>Litery, przykłady i skojarzenia</h2>
+            </div>
+            <label class="search-box">
+              <span>Szukaj</span>
+              <input id="letterSearch" type="search" inputmode="search" placeholder="np. Ж, ż, żuk, жизнь">
+            </label>
+          </div>
+          <div class="letters-grid" id="lettersGrid"></div>
+        </section>
+
+        <section class="view trainer-view" id="view-fiszki" data-view="fiszki">
+          <div class="section-head row">
+            <div>
+              <p class="eyebrow">Powtórki adaptacyjne</p>
+              <h2>Fiszki</h2>
+            </div>
+            <button class="secondary" type="button" id="flashNext">Następna</button>
+          </div>
+          <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Fiszka, dotknij aby odwrócić">
+            <div class="flash-inner">
+              <div class="flash-front">
+                <span class="script-label" aria-label="Zapis rosyjski">🇷🇺</span>
+                <span class="big-letter" id="flashLetter">А</span>
+                <small>dotknij, aby odkryć</small>
+              </div>
+              <div class="flash-back">
+                <span class="script-label latin" aria-label="Zapis polski">🇵🇱</span>
+                <span class="big-letter small-big" id="flashAnswer">a</span>
+                <p id="flashHint">jak polskie „a”</p>
+                <div id="flashExamples"></div>
+              </div>
+            </div>
+          </div>
+          <div class="answer-row">
+            <button class="danger" type="button" data-flash-score="0">Nie wiem</button>
+            <button class="secondary" type="button" data-flash-score="1">Prawie</button>
+            <button class="primary" type="button" data-flash-score="2">Wiem</button>
+          </div>
+        </section>
+
+        <section class="view trainer-view" id="view-quiz" data-view="quiz">
+          <div class="section-head">
+            <p class="eyebrow">Wybór odpowiedzi</p>
+            <h2>Jaki to zapis łaciński?</h2>
+          </div>
+          <div class="quiz-panel">
+            <div class="quiz-tools">
+              <button class="sound-chip" type="button" id="quizSpeak">Odsłuchaj słowo</button>
+            </div>
+            <span class="script-label" aria-label="Zapis rosyjski">🇷🇺</span>
+            <span class="quiz-letter" id="quizLetter">Б</span>
+            <button class="example-line clickable-example" type="button" id="quizExample"></button>
+            <div class="options-grid" id="quizOptions"></div>
+            <p class="feedback" id="quizFeedback" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="view trainer-view" id="view-pisanie" data-view="pisanie">
+          <div class="section-head">
+            <p class="eyebrow">Aktywne przypominanie</p>
+            <h2>Wpisz polski zapis brzmienia</h2>
+          </div>
+          <div class="typing-panel">
+            <span class="script-label" aria-label="Zapis rosyjski">🇷🇺</span>
+            <span class="quiz-letter" id="typingLetter">Д</span>
+            <button class="example-line clickable-example" type="button" id="typingExample"></button>
+            <form id="typingForm" autocomplete="off">
+              <input id="typingInput" type="text" inputmode="text" autocapitalize="off" spellcheck="false" placeholder="np. d">
+              <button class="primary" type="submit">Sprawdź</button>
+            </form>
+            <p class="feedback" id="typingFeedback" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="view trainer-view" id="view-pary" data-view="pary">
+          <div class="section-head row">
+            <div>
+              <p class="eyebrow">Rozpoznawanie wzorców</p>
+              <h2>Połącz pary</h2>
+            </div>
+            <button class="secondary" type="button" id="pairsReset">Nowa runda</button>
+          </div>
+          <p class="muted">Łącz kartę z 🇷🇺 z kartą z 🇵🇱.</p>
+          <div class="pairs-board" id="pairsBoard" aria-live="polite"></div>
+        </section>
+
+        <section class="view" id="view-plan" data-view="plan">
+          <div class="section-head">
+            <p class="eyebrow">Plan od zera</p>
+            <h2>Ścieżka nauki</h2>
+          </div>
+          <div class="timeline">
+            <article>
+              <span>Poziom 0</span>
+              <h3>Znaki podobne</h3>
+              <p>А, К, М, О, Т, Е. Cel: szybkie wejście i pierwsze sukcesy.</p>
+            </article>
+            <article>
+              <span>Poziom 1</span>
+              <h3>Fałszywi znajomi</h3>
+              <p>В, Н, Р, С, У, Х. Cel: przestać czytać je po łacińsku.</p>
+            </article>
+            <article>
+              <span>Poziom 2</span>
+              <h3>Nowe spółgłoski</h3>
+              <p>Б, Г, Д, Ж, З, И, Й, Л, П, Ф, Ц, Ч, Ш. Cel: rozpoznawać większość rosyjskich słów.</p>
+            </article>
+            <article>
+              <span>Poziom 3</span>
+              <h3>Samogłoski i znaki specjalne</h3>
+              <p>Ё, Ы, Э, Ю, Я, Щ, Ъ, Ь. Cel: pełny alfabet i trudniejsze mechanizmy wymowy.</p>
+            </article>
+          </div>
+          <div class="reset-zone">
+            <button class="danger" type="button" id="resetProgress">Wyczyść postęp</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

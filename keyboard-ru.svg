@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" role="img" aria-label="Rosyjski układ klawiatury ЙЦУКЕН">
+  <rect width="980" height="320" rx="22" fill="#f7f3ea"/>
+  <rect x="18" y="18" width="944" height="284" rx="18" fill="#fffdf8" stroke="#d9d0bf" stroke-width="2"/>
+  <style>
+    .key{fill:#ece7db;stroke:#d9d0bf;stroke-width:2}
+    .ru{font:700 24px system-ui,sans-serif;fill:#1f7a7a}
+    .lat{font:600 13px system-ui,sans-serif;fill:#746c5e}
+    .wide{font:700 18px system-ui,sans-serif;fill:#746c5e}
+  </style>
+  <g transform="translate(38 44)">
+    <g>
+      <rect class="key" x="0" y="0" width="58" height="50" rx="8"/><text class="lat" x="10" y="17">Q</text><text class="ru" x="30" y="36" text-anchor="middle">Й</text>
+      <rect class="key" x="66" y="0" width="58" height="50" rx="8"/><text class="lat" x="76" y="17">W</text><text class="ru" x="95" y="36" text-anchor="middle">Ц</text>
+      <rect class="key" x="132" y="0" width="58" height="50" rx="8"/><text class="lat" x="142" y="17">E</text><text class="ru" x="161" y="36" text-anchor="middle">У</text>
+      <rect class="key" x="198" y="0" width="58" height="50" rx="8"/><text class="lat" x="208" y="17">R</text><text class="ru" x="227" y="36" text-anchor="middle">К</text>
+      <rect class="key" x="264" y="0" width="58" height="50" rx="8"/><text class="lat" x="274" y="17">T</text><text class="ru" x="293" y="36" text-anchor="middle">Е</text>
+      <rect class="key" x="330" y="0" width="58" height="50" rx="8"/><text class="lat" x="340" y="17">Y</text><text class="ru" x="359" y="36" text-anchor="middle">Н</text>
+      <rect class="key" x="396" y="0" width="58" height="50" rx="8"/><text class="lat" x="406" y="17">U</text><text class="ru" x="425" y="36" text-anchor="middle">Г</text>
+      <rect class="key" x="462" y="0" width="58" height="50" rx="8"/><text class="lat" x="472" y="17">I</text><text class="ru" x="491" y="36" text-anchor="middle">Ш</text>
+      <rect class="key" x="528" y="0" width="58" height="50" rx="8"/><text class="lat" x="538" y="17">O</text><text class="ru" x="557" y="36" text-anchor="middle">Щ</text>
+      <rect class="key" x="594" y="0" width="58" height="50" rx="8"/><text class="lat" x="604" y="17">P</text><text class="ru" x="623" y="36" text-anchor="middle">З</text>
+      <rect class="key" x="660" y="0" width="58" height="50" rx="8"/><text class="lat" x="670" y="17">[</text><text class="ru" x="689" y="36" text-anchor="middle">Х</text>
+      <rect class="key" x="726" y="0" width="58" height="50" rx="8"/><text class="lat" x="736" y="17">]</text><text class="ru" x="755" y="36" text-anchor="middle">Ъ</text>
+    </g>
+    <g transform="translate(28 66)">
+      <rect class="key" x="0" y="0" width="58" height="50" rx="8"/><text class="lat" x="10" y="17">A</text><text class="ru" x="30" y="36" text-anchor="middle">Ф</text>
+      <rect class="key" x="66" y="0" width="58" height="50" rx="8"/><text class="lat" x="76" y="17">S</text><text class="ru" x="95" y="36" text-anchor="middle">Ы</text>
+      <rect class="key" x="132" y="0" width="58" height="50" rx="8"/><text class="lat" x="142" y="17">D</text><text class="ru" x="161" y="36" text-anchor="middle">В</text>
+      <rect class="key" x="198" y="0" width="58" height="50" rx="8"/><text class="lat" x="208" y="17">F</text><text class="ru" x="227" y="36" text-anchor="middle">А</text>
+      <rect class="key" x="264" y="0" width="58" height="50" rx="8"/><text class="lat" x="274" y="17">G</text><text class="ru" x="293" y="36" text-anchor="middle">П</text>
+      <rect class="key" x="330" y="0" width="58" height="50" rx="8"/><text class="lat" x="340" y="17">H</text><text class="ru" x="359" y="36" text-anchor="middle">Р</text>
+      <rect class="key" x="396" y="0" width="58" height="50" rx="8"/><text class="lat" x="406" y="17">J</text><text class="ru" x="425" y="36" text-anchor="middle">О</text>
+      <rect class="key" x="462" y="0" width="58" height="50" rx="8"/><text class="lat" x="472" y="17">K</text><text class="ru" x="491" y="36" text-anchor="middle">Л</text>
+      <rect class="key" x="528" y="0" width="58" height="50" rx="8"/><text class="lat" x="538" y="17">L</text><text class="ru" x="557" y="36" text-anchor="middle">Д</text>
+      <rect class="key" x="594" y="0" width="58" height="50" rx="8"/><text class="lat" x="604" y="17">;</text><text class="ru" x="623" y="36" text-anchor="middle">Ж</text>
+      <rect class="key" x="660" y="0" width="58" height="50" rx="8"/><text class="lat" x="670" y="17">'</text><text class="ru" x="689" y="36" text-anchor="middle">Э</text>
+    </g>
+    <g transform="translate(76 132)">
+      <rect class="key" x="0" y="0" width="58" height="50" rx="8"/><text class="lat" x="10" y="17">Z</text><text class="ru" x="30" y="36" text-anchor="middle">Я</text>
+      <rect class="key" x="66" y="0" width="58" height="50" rx="8"/><text class="lat" x="76" y="17">X</text><text class="ru" x="95" y="36" text-anchor="middle">Ч</text>
+      <rect class="key" x="132" y="0" width="58" height="50" rx="8"/><text class="lat" x="142" y="17">C</text><text class="ru" x="161" y="36" text-anchor="middle">С</text>
+      <rect class="key" x="198" y="0" width="58" height="50" rx="8"/><text class="lat" x="208" y="17">V</text><text class="ru" x="227" y="36" text-anchor="middle">М</text>
+      <rect class="key" x="264" y="0" width="58" height="50" rx="8"/><text class="lat" x="274" y="17">B</text><text class="ru" x="293" y="36" text-anchor="middle">И</text>
+      <rect class="key" x="330" y="0" width="58" height="50" rx="8"/><text class="lat" x="340" y="17">N</text><text class="ru" x="359" y="36" text-anchor="middle">Т</text>
+      <rect class="key" x="396" y="0" width="58" height="50" rx="8"/><text class="lat" x="406" y="17">M</text><text class="ru" x="425" y="36" text-anchor="middle">Ь</text>
+      <rect class="key" x="462" y="0" width="58" height="50" rx="8"/><text class="lat" x="472" y="17">,</text><text class="ru" x="491" y="36" text-anchor="middle">Б</text>
+      <rect class="key" x="528" y="0" width="58" height="50" rx="8"/><text class="lat" x="538" y="17">.</text><text class="ru" x="557" y="36" text-anchor="middle">Ю</text>
+      <rect class="key" x="594" y="0" width="58" height="50" rx="8"/><text class="lat" x="604" y="17">`</text><text class="ru" x="623" y="36" text-anchor="middle">Ё</text>
+    </g>
+    <rect class="key" x="170" y="212" width="420" height="42" rx="9"/><text class="wide" x="380" y="239" text-anchor="middle">ЙЦУКЕН / rosyjski standardowy</text>
+  </g>
+</svg>
