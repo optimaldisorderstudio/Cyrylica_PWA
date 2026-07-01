@@ -47,6 +47,58 @@ const LETTERS = [
   l("Ь", "ь", "miękki znak", ["miękki znak", "miekki znak", "ь"], "signs", 3, "Nie ma własnego dźwięku. Zmiękcza poprzednią spółgłoskę.", "Ь działa jak znak miękkości. Porównaj: брат/brat i брать/brat' = brać.", [["день", "dien'", "dzień"], ["письмо", "pismo", "list"], ["конь", "kon'", "koń"]])
 ];
 
+const WORDS = [
+  w("мама", "mama", "mama", 0),
+  w("там", "tam", "tam", 0),
+  w("кот", "kot", "kot", 0),
+  w("мак", "mak", "mak", 0),
+  w("тема", "tema", "temat", 0),
+  w("том", "tom", "tom", 0),
+  w("метка", "metka", "znacznik", 0),
+  w("комета", "kometa", "kometa", 0),
+
+  w("вода", "wada", "woda", 1),
+  w("нос", "nos", "nos", 1),
+  w("сын", "syn", "syn", 1),
+  w("рука", "ruka", "ręka", 1),
+  w("сок", "sok", "sok", 1),
+  w("весна", "wiesna", "wiosna", 1),
+  w("хата", "chata", "chata", 1),
+  w("ворота", "worota", "brama", 1),
+  w("сухо", "sucho", "sucho", 1),
+  w("сторона", "storona", "strona", 1),
+
+  w("брат", "brat", "brat", 2),
+  w("дом", "dom", "dom", 2),
+  w("друг", "druk", "przyjaciel", 2),
+  w("город", "gorod", "miasto", 2),
+  w("школа", "szkoła", "szkoła", 2),
+  w("чай", "czaj", "herbata", 2),
+  w("машина", "maszyna", "samochód", 2),
+  w("лампа", "lampa", "lampa", 2),
+  w("фото", "foto", "zdjęcie", 2),
+  w("центр", "centr", "centrum", 2),
+  w("жук", "żuk", "chrząszcz", 2),
+  w("зима", "zima", "zima", 2),
+  w("рыба", "ryba", "ryba", 2),
+  w("папа", "papa", "tata", 2),
+
+  w("ёлка", "jołka", "choinka", 3),
+  w("сыр", "syr", "ser", 3),
+  w("это", "eta", "to", 3),
+  w("юг", "juk", "południe", 3),
+  w("семья", "siemja", "rodzina", 3),
+  w("борщ", "borszcz", "barszcz", 3),
+  w("день", "dien'", "dzień", 3),
+  w("письмо", "pismo", "list", 3),
+  w("объём", "objom", "objętość", 3),
+  w("съезд", "sjezd", "zjazd", 3),
+  w("люблю", "lublu", "kocham", 3),
+  w("моё", "majo", "moje", 3),
+  w("конь", "kon'", "koń", 3),
+  w("овощи", "owoszczi", "warzywa", 3)
+];
+
 function l(upper, lower, latin, aliases, set, level, hint, memo, examples) {
   return {
     c: upper,
@@ -60,6 +112,10 @@ function l(upper, lower, latin, aliases, set, level, hint, memo, examples) {
     examples: examples.map(([word, transcription, meaning]) => ({ word, transcription, meaning })),
     say: (examples.find((item) => item[0] !== "—") || [upper])[0]
   };
+}
+
+function w(cyr, latin, meaning, stage) {
+  return { cyr, latin, meaning, stage, id: cyr };
 }
 
 const STORAGE_KEY = "cyrylica-pwa-state-v2";
@@ -79,6 +135,8 @@ function loadState() {
     level: 0,
     selectedSets: SETS.map((set) => set.id),
     displayMode: "pair",
+    quizMode: "letters",
+    wordStage: "mix",
     theme: "light",
     sound: true,
     stats: { correct: 0, total: 0, streak: 0 },
@@ -108,6 +166,18 @@ function progressFor(letter) {
   return state.progress[letter.c];
 }
 
+function updateStats(correct) {
+  if (correct) {
+    state.stats.correct += 1;
+    state.stats.streak += 1;
+  } else {
+    state.stats.streak = 0;
+  }
+  state.stats.total += 1;
+  saveState();
+  renderStats();
+}
+
 function weightedLetter() {
   const pool = activeLetters();
   const weighted = [];
@@ -117,6 +187,33 @@ function weightedLetter() {
     for (let i = 0; i < weight; i += 1) weighted.push(letter);
   });
   return weighted[Math.floor(Math.random() * weighted.length)] || pool[0] || LETTERS[0];
+}
+
+function wordPool() {
+  if (state.wordStage === "mix") {
+    return WORDS.filter((word) => word.stage <= state.level);
+  }
+  return WORDS.filter((word) => word.stage === Number(state.wordStage));
+}
+
+function weightedWord() {
+  const pool = wordPool().length ? wordPool() : WORDS.filter((word) => word.stage <= state.level);
+  const weighted = [];
+  pool.forEach((word) => {
+    const base = state.wordStage === "mix" ? Math.max(1, word.stage + 1) : 1;
+    for (let i = 0; i < base; i += 1) weighted.push(word);
+  });
+  return weighted[Math.floor(Math.random() * weighted.length)] || WORDS[0];
+}
+
+function wordDistractors(correct) {
+  const preferred = WORDS.filter((word) => (
+    word.cyr !== correct.cyr &&
+    word.stage <= Math.max(correct.stage + 1, Number(state.level) || 0) &&
+    Math.abs(word.cyr.length - correct.cyr.length) <= 2
+  ));
+  const fallback = WORDS.filter((word) => word.cyr !== correct.cyr);
+  return shuffle(preferred.length >= 3 ? preferred : fallback).slice(0, 3);
 }
 
 function shuffle(items) {
@@ -142,15 +239,10 @@ function updateProgress(letter, correct, strength = 1) {
   if (correct) {
     progress.correct += 1;
     progress.mastery = Math.min(5, progress.mastery + strength);
-    state.stats.correct += 1;
-    state.stats.streak += 1;
   } else {
     progress.mastery = Math.max(0, progress.mastery - 1);
-    state.stats.streak = 0;
   }
-  state.stats.total += 1;
-  saveState();
-  renderStats();
+  updateStats(correct);
 }
 
 function renderStats() {
@@ -291,6 +383,23 @@ function renderDisplayMode() {
   });
 }
 
+function renderQuizControls() {
+  $$("#quizModeSelect button").forEach((button) => {
+    button.classList.toggle("selected", button.dataset.quizMode === state.quizMode);
+  });
+  $$("#wordStageSelect button").forEach((button) => {
+    button.classList.toggle("selected", button.dataset.wordStage === String(state.wordStage));
+  });
+  const notes = {
+    "0": "Etap 0: krótkie słowa złożone głównie z liter podobnych do łacińskich.",
+    "1": "Etap 1: słowa z fałszywymi znajomymi, np. В, Н, Р, С, У, Х.",
+    "2": "Etap 2: słowa z nowymi spółgłoskami, np. Б, Г, Д, Ж, Ц, Ч, Ш.",
+    "3": "Etap 3: pełniejszy alfabet, samogłoski jotowane oraz Ъ/Ь.",
+    "mix": "Miks: słowa do bieżącego poziomu, z większym udziałem trudniejszych etapów."
+  };
+  $("#wordStageNote").textContent = notes[String(state.wordStage)] || notes.mix;
+}
+
 function rerenderLearningViews() {
   renderLetters();
   nextFlash();
@@ -347,25 +456,72 @@ function scoreFlash(score) {
 }
 
 function nextQuiz() {
-  currentQuiz = weightedLetter();
-  const pool = activeLetters().filter((letter) => letter.c !== currentQuiz.c);
-  const options = shuffle([currentQuiz, ...shuffle(pool).slice(0, 3)]);
-  $("#quizLetter").textContent = displayCyr(currentQuiz);
-  $("#quizExample").textContent = firstExample(currentQuiz);
-  $("#quizExample").dataset.sayWord = currentQuiz.say;
+  if (state.quizMode === "latinToCyr" || state.quizMode === "cyrToLatin") {
+    nextWordQuiz();
+    return;
+  }
+  $("#quizTitle").textContent = "Jaki to zapis łaciński?";
+  currentQuiz = { type: "letter", item: weightedLetter() };
+  const currentLetter = currentQuiz.item;
+  const pool = activeLetters().filter((letter) => letter.c !== currentLetter.c);
+  const options = shuffle([currentLetter, ...shuffle(pool).slice(0, 3)]);
+  $("#quizLetter").textContent = displayCyr(currentLetter);
+  $("#quizExample").textContent = firstExample(currentLetter);
+  $("#quizExample").dataset.sayWord = currentLetter.say;
   $("#quizFeedback").textContent = "";
   $("#quizOptions").innerHTML = options.map((letter) => (
     `<button class="option-button" type="button" data-answer="${letter.c}">${flagLabel("latin")}${letter.latin}</button>`
   )).join("");
 }
 
-function answerQuiz(char, button) {
-  const correct = char === currentQuiz.c;
+function nextWordQuiz() {
+  const word = weightedWord();
+  const options = shuffle([word, ...wordDistractors(word)]);
+  const latinToCyr = state.quizMode === "latinToCyr";
+  currentQuiz = {
+    type: "word",
+    direction: state.quizMode,
+    item: word,
+    answer: latinToCyr ? word.cyr : word.latin
+  };
+  $("#quizTitle").textContent = latinToCyr ? "Wybierz zapis cyrylicą" : "Wybierz zapis łaciński";
+  $("#quizLetter").textContent = latinToCyr ? word.latin : word.cyr;
+  $("#quizExample").textContent = `${word.meaning} · etap ${word.stage}`;
+  $("#quizExample").dataset.sayWord = word.cyr;
+  $("#quizFeedback").textContent = "";
+  $("#quizOptions").innerHTML = options.map((option) => {
+    const label = latinToCyr ? option.cyr : option.latin;
+    const kind = latinToCyr ? "cyr" : "latin";
+    const answer = latinToCyr ? option.cyr : option.latin;
+    return `<button class="option-button word-option" type="button" data-answer="${answer}">${flagLabel(kind)}<b>${label}</b><small>${option.meaning}</small></button>`;
+  }).join("");
+}
+
+function answerQuiz(answer, button) {
+  if (!currentQuiz) return;
+  if (currentQuiz.type === "word") {
+    answerWordQuiz(answer, button);
+    return;
+  }
+  const currentLetter = currentQuiz.item;
+  const correct = answer === currentLetter.c;
   button.classList.add(correct ? "correct" : "wrong");
-  updateProgress(currentQuiz, correct, 1);
-  $("#quizFeedback").textContent = correct ? `Dobrze: ${currentQuiz.c}/${currentQuiz.lower} = ${currentQuiz.latin}` : `Poprawnie: ${currentQuiz.latin}.`;
+  updateProgress(currentLetter, correct, 1);
+  $("#quizFeedback").textContent = correct ? `Dobrze: ${currentLetter.c}/${currentLetter.lower} = ${currentLetter.latin}` : `Poprawnie: ${currentLetter.latin}.`;
   chime(correct ? "ok" : "bad");
   setTimeout(nextQuiz, 1100);
+}
+
+function answerWordQuiz(answer, button) {
+  const word = currentQuiz.item;
+  const correct = answer === currentQuiz.answer;
+  button.classList.add(correct ? "correct" : "wrong");
+  updateStats(correct);
+  $("#quizFeedback").textContent = correct
+    ? `Dobrze: ${word.cyr} = ${word.latin}`
+    : `Poprawnie: ${currentQuiz.answer}.`;
+  chime(correct ? "ok" : "bad");
+  setTimeout(nextQuiz, 1300);
 }
 
 function nextTyping() {
@@ -486,6 +642,18 @@ function bindEvents() {
     saveState();
     rerenderLearningViews();
   }));
+  $$("#quizModeSelect button").forEach((button) => button.addEventListener("click", () => {
+    state.quizMode = button.dataset.quizMode;
+    renderQuizControls();
+    saveState();
+    nextQuiz();
+  }));
+  $$("#wordStageSelect button").forEach((button) => button.addEventListener("click", () => {
+    state.wordStage = button.dataset.wordStage;
+    renderQuizControls();
+    saveState();
+    nextQuiz();
+  }));
 
   $("#letterSearch").addEventListener("input", renderLetters);
   $("#lettersGrid").addEventListener("click", (event) => {
@@ -513,7 +681,11 @@ function bindEvents() {
   $("#flashNext").addEventListener("click", nextFlash);
   $$("[data-flash-score]").forEach((button) => button.addEventListener("click", () => scoreFlash(button.dataset.flashScore)));
 
-  $("#quizSpeak").addEventListener("click", () => speak(currentQuiz));
+  $("#quizSpeak").addEventListener("click", () => {
+    if (!currentQuiz) return;
+    if (currentQuiz.type === "word") speakText(currentQuiz.item.cyr);
+    if (currentQuiz.type === "letter") speak(currentQuiz.item);
+  });
   $("#quizExample").addEventListener("click", () => speakText($("#quizExample").dataset.sayWord));
   $("#quizOptions").addEventListener("click", (event) => {
     const button = event.target.closest(".option-button");
@@ -543,11 +715,14 @@ function bindEvents() {
 function init() {
   if (!Array.isArray(state.selectedSets)) state.selectedSets = SETS.map((set) => set.id);
   if (!state.displayMode) state.displayMode = "pair";
+  if (!state.quizMode) state.quizMode = "letters";
+  if (!state.wordStage) state.wordStage = "mix";
   setTheme(state.theme || "light");
   $("#soundToggle").textContent = state.sound ? "♪" : "×";
   renderLevelSelect();
   renderSetSelect();
   renderDisplayMode();
+  renderQuizControls();
   bindEvents();
   renderStats();
   rerenderLearningViews();

@@ -22,6 +22,8 @@ Do działania offline i instalacji PWA hostuj folder przez HTTP/HTTPS, np. na Gi
 - lokalna grafika rosyjskiej klawiatury ЙЦУКЕН
 - fiszki adaptacyjne
 - quiz wyboru
+- quiz słowny w obu kierunkach: zapis łaciński → cyrylica oraz cyrylica → zapis łaciński
+- progresja słów według etapów trudności 0-3 albo tryb mieszany
 - tryb pisania
 - łączenie par
 - lokalny postęp w `localStorage`

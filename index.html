@@ -112,7 +112,7 @@
             </button>
             <button class="module-card" type="button" data-jump="quiz">
               <strong>Quiz wyboru</strong>
-              <span>Wyraźnie oddzielone cyrylica i zapis łaciński.</span>
+              <span>Litery oraz słowa w obu kierunkach z progresją trudności.</span>
             </button>
             <button class="module-card" type="button" data-jump="pisanie">
               <strong>Tryb pisania</strong>
@@ -219,7 +219,28 @@
         <section class="view trainer-view" id="view-quiz" data-view="quiz">
           <div class="section-head">
             <p class="eyebrow">Wybór odpowiedzi</p>
-            <h2>Jaki to zapis łaciński?</h2>
+            <h2 id="quizTitle">Jaki to zapis łaciński?</h2>
+          </div>
+          <div class="quiz-config">
+            <div>
+              <p class="eyebrow">Tryb quizu</p>
+              <div class="quiz-mode-select" id="quizModeSelect" role="group" aria-label="Tryb quizu">
+                <button type="button" data-quiz-mode="letters" class="selected">Litera → zapis</button>
+                <button type="button" data-quiz-mode="latinToCyr">Słowo PL → 🇷🇺</button>
+                <button type="button" data-quiz-mode="cyrToLatin">Słowo 🇷🇺 → PL</button>
+              </div>
+            </div>
+            <div>
+              <p class="eyebrow">Trudność słów</p>
+              <div class="word-stage-select" id="wordStageSelect" role="group" aria-label="Trudność słów">
+                <button type="button" data-word-stage="0">0</button>
+                <button type="button" data-word-stage="1">1</button>
+                <button type="button" data-word-stage="2">2</button>
+                <button type="button" data-word-stage="3">3</button>
+                <button type="button" data-word-stage="mix" class="selected">Miks</button>
+              </div>
+              <p class="muted small" id="wordStageNote">Miks używa słów do bieżącego poziomu i stopniowo zwiększa udział trudniejszych bukw.</p>
+            </div>
           </div>
           <div class="quiz-panel">
             <div class="quiz-tools">
